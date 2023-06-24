@@ -1,45 +1,78 @@
 import P5 from "p5";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { generateP5Canvas } from "./functions/GenerateP5Canvas";
+import { waitForElement } from "./functions/WaitElements";
 
 function App() {
+  const [tamanhoDaLinha, setTamanhoDaLinha] = useState(250)
+  // Tamanho inicial do canvas
+  const canvasWidth = useRef(585)
+  const canvasHeight = useRef(525)
+
+  // Variáveis  da simulação
+  const angulo = useRef(0) // Ângulo do pêndulo
+  const origem = useRef<P5.Vector | null>(null) // Ponto de origem do braço do pêndulo
+  const massa = useRef<P5.Vector | null>(null) // Coordenadas da massa do pêndulo
+  const velocidadeAngular = useRef(0)
+  const aceleraçãoAngular = useRef(0)
+  const constanteDaGravidade = useRef(0) // [0.1;1]
 
   // Executa apenas na primeira vez que a página é carregada
   useEffect(() => {
+    //Adiciona um evento para quando a tela mudar de tamanho
+    addEventListener('resize', () => {
+      canvasWidth.current = document.querySelector("#simulator")?.clientWidth as number - 16
 
-    // Cria o rascunho que será usado como base
-    const sketch = (p5: P5) => {
-      // Método de configuração
-      p5.setup = () => {
-        const canvas = p5.createCanvas(585, 525);
-        // Diz onde o canvas será desenhado
-        canvas.parent("simulator")
-      };
+      console.log(tamanhoDaLinha)
 
-      p5.draw = () => {
-        if (p5.mouseIsPressed) {
-          p5.fill(0);
-        } else {
-          p5.fill(255);
-        }
-        p5.ellipse(p5.mouseX, p5.mouseY, 80, 80);
-      }
-    };
+      //Gera a simulação chamando uma função e passando os parâmetros correspondentes
+      generateP5Canvas({
+        angulo: angulo.current,
+        canvasHeight: canvasHeight.current,
+        canvasWidth: canvasWidth.current,
+        constanteDaGravidade: constanteDaGravidade.current,
+        massa: massa.current,
+        tamanhoDaLinha: tamanhoDaLinha,
+        origem: origem.current,
+        aceleraçãoAngular: aceleraçãoAngular.current,
+        velocidadeAngular: velocidadeAngular.current
+      })
+    })
 
-    // Remove todos os canvas que existem na tela antes de desenhar um novo
-    if (document.querySelectorAll('canvas')) {
-      document.querySelectorAll('canvas')?.forEach(canvas => canvas.remove())
-    }
+    // Espera a div que contem a simulação aparecer na tela
+    waitForElement("#simulator").then(element => {
+      // O canvas agora vai ocupar 100% do elemento respeitando o padding
+      canvasWidth.current = element.clientWidth - 16
+      canvasHeight.current = element.clientHeight - 40
 
-    // Cria o ambiente que vai suportar a biblioteca p5
-    new P5(sketch)
-
-    //Busca o canvas desenhado atualmente na tela para mudar o estilo dele
-    const onScreenCanvas = document.querySelector('canvas')
-
-    if (onScreenCanvas) {
-      onScreenCanvas.className = '0px'
-    }
+      //Gera a simulação chamando uma função e passando os parâmetros correspondentes
+      generateP5Canvas({
+        angulo: angulo.current,
+        canvasHeight: canvasHeight.current,
+        canvasWidth: canvasWidth.current,
+        constanteDaGravidade: constanteDaGravidade.current,
+        massa: massa.current,
+        tamanhoDaLinha: tamanhoDaLinha,
+        origem: origem.current,
+        aceleraçãoAngular: aceleraçãoAngular.current,
+        velocidadeAngular: velocidadeAngular.current
+      })
+    })
   }, [])
+
+  useEffect(() => {
+    generateP5Canvas({
+      angulo: angulo.current,
+      canvasHeight: canvasHeight.current,
+      canvasWidth: canvasWidth.current,
+      constanteDaGravidade: constanteDaGravidade.current,
+      massa: massa.current,
+      tamanhoDaLinha: tamanhoDaLinha,
+      origem: origem.current,
+      aceleraçãoAngular: aceleraçãoAngular.current,
+      velocidadeAngular: velocidadeAngular.current
+    })
+  }, [tamanhoDaLinha])
 
   return (
     <>
@@ -48,11 +81,12 @@ function App() {
           <h1 className="">Pendulum SImulator</h1>
         </div>
         <div className="flex" style={{ height: '95%' }}>
-          <main className="w-4/5 h-full bg-gray-600 box-border p-2" id="simulator">
+          <main className="w-4/5 h-full bg-Steel-Blue box-border p-2" id="simulator">
             Simulador
           </main>
-          <aside className="w-1/5 h-full bg-red-200 p-2">
-            Parâmetros
+          <aside className="w-1/5 h-full  p-2 flex justify-center">
+            {/* Parâmetros
+            <button onClick={() => { setTamanhoDaLinha(400) }}>a</button> */}
           </aside>
         </div>
       </div>
