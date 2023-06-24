@@ -1,78 +1,34 @@
-import P5 from "p5";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "./context/Global";
 import { generateP5Canvas } from "./functions/GenerateP5Canvas";
 import { waitForElement } from "./functions/WaitElements";
 
 function App() {
-  const [tamanhoDaLinha, setTamanhoDaLinha] = useState(250)
-  // Tamanho inicial do canvas
-  const canvasWidth = useRef(585)
-  const canvasHeight = useRef(525)
-
-  // Variáveis  da simulação
-  const angulo = useRef(0) // Ângulo do pêndulo
-  const origem = useRef<P5.Vector | null>(null) // Ponto de origem do braço do pêndulo
-  const massa = useRef<P5.Vector | null>(null) // Coordenadas da massa do pêndulo
-  const velocidadeAngular = useRef(0)
-  const aceleraçãoAngular = useRef(0)
-  const constanteDaGravidade = useRef(0) // [0.1;1]
+  const { definirLarguraDoCanvas, sketch, definirAlturaDoCanvas } = useContext(GlobalContext)
 
   // Executa apenas na primeira vez que a página é carregada
   useEffect(() => {
     //Adiciona um evento para quando a tela mudar de tamanho
     addEventListener('resize', () => {
-      canvasWidth.current = document.querySelector("#simulator")?.clientWidth as number - 16
-
-      console.log(tamanhoDaLinha)
-
-      //Gera a simulação chamando uma função e passando os parâmetros correspondentes
-      generateP5Canvas({
-        angulo: angulo.current,
-        canvasHeight: canvasHeight.current,
-        canvasWidth: canvasWidth.current,
-        constanteDaGravidade: constanteDaGravidade.current,
-        massa: massa.current,
-        tamanhoDaLinha: tamanhoDaLinha,
-        origem: origem.current,
-        aceleraçãoAngular: aceleraçãoAngular.current,
-        velocidadeAngular: velocidadeAngular.current
-      })
+      definirLarguraDoCanvas(document.querySelector("#simulator")?.clientWidth as number - 16)
+      definirAlturaDoCanvas(document.querySelector("#simulator")?.clientHeight as number - 40)
     })
 
     // Espera a div que contem a simulação aparecer na tela
-    waitForElement("#simulator").then(element => {
+    waitForElement("#simulator").then(() => {
       // O canvas agora vai ocupar 100% do elemento respeitando o padding
-      canvasWidth.current = element.clientWidth - 16
-      canvasHeight.current = element.clientHeight - 40
+      definirLarguraDoCanvas(document.querySelector("#simulator")?.clientWidth as number - 16)
+      definirAlturaDoCanvas(document.querySelector("#simulator")?.clientHeight as number - 40)
 
-      //Gera a simulação chamando uma função e passando os parâmetros correspondentes
-      generateP5Canvas({
-        angulo: angulo.current,
-        canvasHeight: canvasHeight.current,
-        canvasWidth: canvasWidth.current,
-        constanteDaGravidade: constanteDaGravidade.current,
-        massa: massa.current,
-        tamanhoDaLinha: tamanhoDaLinha,
-        origem: origem.current,
-        aceleraçãoAngular: aceleraçãoAngular.current,
-        velocidadeAngular: velocidadeAngular.current
-      })
+      //Gera a simulação
+      generateP5Canvas(sketch)
     })
   }, [])
 
+  // Atualiza a página toda vez que algum parâmetro da simulação é alterado
   useEffect(() => {
-    generateP5Canvas({
-      angulo: angulo.current,
-      canvasHeight: canvasHeight.current,
-      canvasWidth: canvasWidth.current,
-      constanteDaGravidade: constanteDaGravidade.current,
-      massa: massa.current,
-      tamanhoDaLinha: tamanhoDaLinha,
-      origem: origem.current,
-      aceleraçãoAngular: aceleraçãoAngular.current,
-      velocidadeAngular: velocidadeAngular.current
-    })
-  }, [tamanhoDaLinha])
+    generateP5Canvas(sketch)
+  }, [sketch])
 
   return (
     <>
