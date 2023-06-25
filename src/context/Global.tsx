@@ -17,6 +17,9 @@ type ContextStateProps = {
     sketch: P5SketchProps
     definirLarguraDoCanvas: (novaLargura: number) => void
     definirAlturaDoCanvas: (novaAltura: number) => void
+    definirAngulo: (novoAngulo: number) => void
+    definirConstanteDaGravidade: (novaConstante: number) => void
+    definirTamanhoDaLinha: (novoTamanho: number) => void
 }
 
 type ContextProviderProps = {
@@ -28,18 +31,21 @@ const p5 = new P5(sketch)
 
 const initialStateValues: ContextStateProps = {
     sketch: {
-        angulo: p5.PI / 4,
+        angulo: p5.PI / 4, //
         origem: p5.createVector(),
         massa: p5.createVector(),
         tamanhoDaLinha: 250,
-        alturaDoCanvas: 525,
-        larguraDoCanvas: 585,
-        constanteDaGravidade: 0,
+        alturaDoCanvas: 525, //
+        larguraDoCanvas: 585, //
+        constanteDaGravidade: 0,//
         aceleraçãoAngular: 0,
         velocidadeAngular: 0,
     },
     definirLarguraDoCanvas: () => { null },
-    definirAlturaDoCanvas: () => { null }
+    definirAlturaDoCanvas: () => { null },
+    definirAngulo: () => { null },
+    definirConstanteDaGravidade: () => { null },
+    definirTamanhoDaLinha: () => { null }
 }
 
 export const GlobalContext = createContext<ContextStateProps>(initialStateValues)
@@ -61,8 +67,29 @@ export const GlobalContextProvider = ({ children }: ContextProviderProps) => {
         }))
     }, [])
 
+    const definirAngulo = useCallback((novoAngulo: number) => {
+        definirEstado(estadoAnterior => ({
+            ...estadoAnterior,
+            angulo: novoAngulo
+        }))
+    }, [])
+
+    const definirConstanteDaGravidade = useCallback((novaConstante: number) => {
+        definirEstado(estadoAnterior => ({
+            ...estadoAnterior,
+            constanteDaGravidade: novaConstante
+        }))
+    }, [])
+
+    const definirTamanhoDaLinha = useCallback((novoTamanho: number) => {
+        definirEstado(estadoAnterior => ({
+            ...estadoAnterior,
+            tamanhoDaLinha: novoTamanho
+        }))
+    }, [])
+
     return (
-        < GlobalContext.Provider value={{ sketch: estado, definirLarguraDoCanvas, definirAlturaDoCanvas }} >
+        < GlobalContext.Provider value={{ sketch: estado, definirLarguraDoCanvas, definirAlturaDoCanvas, definirAngulo, definirConstanteDaGravidade, definirTamanhoDaLinha }} >
             {children}
         </  GlobalContext.Provider>
     )
