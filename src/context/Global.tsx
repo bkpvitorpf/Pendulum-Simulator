@@ -31,13 +31,13 @@ const p5 = new P5(sketch)
 
 const initialStateValues: ContextStateProps = {
     sketch: {
-        angulo: p5.PI / 4, //
+        angulo: 0.523599, //30º
         origem: p5.createVector(),
         massa: p5.createVector(),
         tamanhoDaLinha: 250,
-        alturaDoCanvas: 525, //
-        larguraDoCanvas: 585, //
-        constanteDaGravidade: 0,//
+        alturaDoCanvas: 525,
+        larguraDoCanvas: 585,
+        constanteDaGravidade: 0,
         aceleraçãoAngular: 0,
         velocidadeAngular: 0,
     },

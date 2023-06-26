@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         "Steel-Blue": "#001247",
+        "Steel-Blue-Hovered": "#002594"
       },
     },
   },
