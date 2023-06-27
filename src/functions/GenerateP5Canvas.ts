@@ -1,7 +1,6 @@
 import P5 from 'p5';
 
 type P5SketchProps = {
-    angulo: number
     origem: P5.Vector | null
     massa: P5.Vector | null
     tamanhoDaLinha: number
@@ -12,17 +11,18 @@ type P5SketchProps = {
     velocidadeAngular: number
 }
 
-export const generateP5Canvas = ({ angulo, alturaDoCanvas, larguraDoCanvas, massa, origem, tamanhoDaLinha, constanteDaGravidade, aceleraçãoAngular, velocidadeAngular }: P5SketchProps) => {
+export const generateP5Canvas = ({ alturaDoCanvas, larguraDoCanvas, massa, origem, tamanhoDaLinha, constanteDaGravidade, aceleraçãoAngular, velocidadeAngular }: P5SketchProps) => {
     // Remove todos os canvas do p5.js que existem na tela antes de desenhar um novo
     if (document.querySelectorAll('canvas')) {
         document.querySelectorAll('canvas')?.forEach(canvas => canvas.remove())
     }
 
+    let angulo = 0.174533// 10º
+
     // Cria o rascunho que será usado como base
     const sketch = (p5: P5) => {
         // Método de configuração
         p5.setup = () => {
-            angulo
             origem = p5.createVector((larguraDoCanvas / 2), 0)
             massa = p5.createVector()
             // tamanhoDaLinha = 250 // 100 <= linha <= 500

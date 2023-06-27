@@ -2,7 +2,6 @@ import P5 from "p5";
 import { ReactNode, createContext, useCallback, useState } from "react";
 
 type P5SketchProps = {
-    angulo: number
     origem: P5.Vector | null
     massa: P5.Vector | null
     tamanhoDaLinha: number
@@ -17,7 +16,6 @@ type ContextStateProps = {
     sketch: P5SketchProps
     definirLarguraDoCanvas: (novaLargura: number) => void
     definirAlturaDoCanvas: (novaAltura: number) => void
-    definirAngulo: (novoAngulo: number) => void
     definirConstanteDaGravidade: (novaConstante: number) => void
     definirTamanhoDaLinha: (novoTamanho: number) => void
 }
@@ -31,7 +29,6 @@ const p5 = new P5(sketch)
 
 const initialStateValues: ContextStateProps = {
     sketch: {
-        angulo: 0.523599, //30º
         origem: p5.createVector(),
         massa: p5.createVector(),
         tamanhoDaLinha: 250,
@@ -43,7 +40,6 @@ const initialStateValues: ContextStateProps = {
     },
     definirLarguraDoCanvas: () => { null },
     definirAlturaDoCanvas: () => { null },
-    definirAngulo: () => { null },
     definirConstanteDaGravidade: () => { null },
     definirTamanhoDaLinha: () => { null }
 }
@@ -89,7 +85,7 @@ export const GlobalContextProvider = ({ children }: ContextProviderProps) => {
     }, [])
 
     return (
-        < GlobalContext.Provider value={{ sketch: estado, definirLarguraDoCanvas, definirAlturaDoCanvas, definirAngulo, definirConstanteDaGravidade, definirTamanhoDaLinha }} >
+        < GlobalContext.Provider value={{ sketch: estado, definirLarguraDoCanvas, definirAlturaDoCanvas, definirConstanteDaGravidade, definirTamanhoDaLinha }} >
             {children}
         </  GlobalContext.Provider>
     )

@@ -4,17 +4,18 @@ import { generateP5Canvas } from "./functions/GenerateP5Canvas";
 import { waitForElement } from "./functions/WaitElements";
 
 function App() {
-  const { definirLarguraDoCanvas, sketch, definirAlturaDoCanvas, definirTamanhoDaLinha, definirAngulo, definirConstanteDaGravidade } = useContext(GlobalContext)
+  const { definirLarguraDoCanvas, sketch, definirAlturaDoCanvas, definirTamanhoDaLinha, definirConstanteDaGravidade } = useContext(GlobalContext)
 
   // Referências dos inputs
   const tamanhoDaLinhaSliderRef = useRef<HTMLInputElement>(null)
   const constanteDaGravidadeSliderRef = useRef<HTMLInputElement>(null)
-  const anguloInicialRef = useRef<HTMLSelectElement>(null)
 
   //Estado dos inputs
   const [tamanhoDaLinhaSliderState, setTamanhoDaLinha] = useState(250)
   const [constanteDaGravidadeSliderState, setConstanteDaGravidade] = useState(0.1)
   const [simulationIsRunning, setIsRunning] = useState(false)
+
+  const tamanhoDaLinhaEmMetros = tamanhoDaLinhaSliderState * 0.0002645833
 
   // Executa apenas na primeira vez que a página é carregada
   useEffect(() => {
@@ -69,9 +70,9 @@ function App() {
                   id="tamanho-da-linha"
                   type="range"
                   min="100"
-                  step={50}
+                  step={10}
                   max="500"
-                  defaultValue={250}
+                  defaultValue={tamanhoDaLinhaEmMetros}
                   value={tamanhoDaLinhaSliderState}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                   ref={tamanhoDaLinhaSliderRef}
@@ -84,27 +85,6 @@ function App() {
                     event => setTamanhoDaLinha(Number(event.target.value))
                   }
                 />
-              </div>
-
-              {/* Ângulo inicial*/}
-              <div>
-                <label
-                  htmlFor="angulo-inicial"
-                  className="block mb-2 text-md font-normal text-gray-900 dark:text-white"
-                >
-                  Ângulo inicial
-                </label>
-
-                <select
-                  id="angulo-inicial"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(event) => definirAngulo(Number(event.target.value))}
-                  ref={anguloInicialRef}
-                >
-                  <option value="0.523599" selected>30º</option>
-                  <option value="0.785398">45º</option>
-                  <option value="1.0472">60º</option>
-                </select>
               </div>
 
               {/* Constante da gravidade*/}
@@ -121,9 +101,9 @@ function App() {
                   type="range"
                   min="0.1"
                   step={0.1}
-                  max="1"
-                  defaultValue={0.1}
+                  max="9.8"
                   value={constanteDaGravidadeSliderState}
+                  defaultValue={constanteDaGravidadeSliderState}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                   ref={constanteDaGravidadeSliderRef}
                   onMouseUp={() => {
@@ -137,6 +117,18 @@ function App() {
                 />
               </div>
 
+              <div>
+                <div className="flex flex-col" style={{ height: '30%' }}>
+                  <h2 className="py-1">Dados da simulação:</h2>
+                  <p className="py-1">Tamanho da linha: {tamanhoDaLinhaEmMetros.toFixed(2)}m</p>
+                  <p className="py-1">Angulo: 10º</p>
+                  <p className="py-1">Constante da gravidade: {constanteDaGravidadeSliderState}</p>
+                  <p className="py-1">
+                    Período do pêndulo: {(2 * Math.PI * Math.sqrt(tamanhoDaLinhaEmMetros / constanteDaGravidadeSliderState)).toFixed(2)}s
+                  </p>
+                </div>
+              </div>
+
               <button
                 type="button"
                 className="text-Steel-Blue bg-white hover:bg-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full"
@@ -144,9 +136,8 @@ function App() {
                   if (simulationIsRunning) {
                     setIsRunning(false);
                     definirConstanteDaGravidade(0)
-                    if (tamanhoDaLinhaSliderRef.current && anguloInicialRef.current) {
+                    if (tamanhoDaLinhaSliderRef.current) {
                       definirTamanhoDaLinha(Number(tamanhoDaLinhaSliderRef.current.value))
-                      definirAngulo(Number(anguloInicialRef.current.value))
                     }
                   } else {
                     if (constanteDaGravidadeSliderRef.current) {
