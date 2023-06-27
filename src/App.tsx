@@ -120,11 +120,11 @@ function App() {
               <div>
                 <div className="flex flex-col" style={{ height: '30%' }}>
                   <h2 className="py-1">Dados da simulação:</h2>
-                  <p className="py-1">Tamanho da linha: {tamanhoDaLinhaEmMetros.toFixed(2)}m</p>
+                  <p className="py-1">Tamanho da linha: {tamanhoDaLinhaEmMetros.toFixed(3)}m</p>
                   <p className="py-1">Angulo: 10º</p>
                   <p className="py-1">Constante da gravidade: {constanteDaGravidadeSliderState}</p>
                   <p className="py-1">
-                    Período do pêndulo: {(2 * Math.PI * Math.sqrt(tamanhoDaLinhaEmMetros / constanteDaGravidadeSliderState)).toFixed(2)}s
+                    Período do pêndulo: {(2 * Math.PI * Math.sqrt(tamanhoDaLinhaEmMetros / constanteDaGravidadeSliderState)).toFixed(3)}s
                   </p>
                 </div>
               </div>
