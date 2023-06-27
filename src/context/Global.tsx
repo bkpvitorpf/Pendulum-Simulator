@@ -63,13 +63,6 @@ export const GlobalContextProvider = ({ children }: ContextProviderProps) => {
         }))
     }, [])
 
-    const definirAngulo = useCallback((novoAngulo: number) => {
-        definirEstado(estadoAnterior => ({
-            ...estadoAnterior,
-            angulo: novoAngulo
-        }))
-    }, [])
-
     const definirConstanteDaGravidade = useCallback((novaConstante: number) => {
         definirEstado(estadoAnterior => ({
             ...estadoAnterior,
