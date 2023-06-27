@@ -124,7 +124,7 @@ function App() {
                   <p className="py-1">Angulo: 10º</p>
                   <p className="py-1">Constante da gravidade: {constanteDaGravidadeSliderState}</p>
                   <p className="py-1">
-                    Período do pêndulo: {(2 * Math.PI * Math.sqrt(tamanhoDaLinhaEmMetros / constanteDaGravidadeSliderState)).toFixed(3)}s
+                    Período do pêndulo: {(2 * Math.PI * Math.sqrt(tamanhoDaLinhaEmMetros / constanteDaGravidadeSliderState)).toFixed(2)}s
                   </p>
                 </div>
               </div>
