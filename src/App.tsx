@@ -61,7 +61,7 @@ function App() {
               <div className="mt-2">
                 <label
                   htmlFor="tamanho-da-linha"
-                  className="block mb-2 text-md font-normal text-gray-900 dark:text-white"
+                  className="block mb-2 text-md font-normal"
                 >
                   Tamanho da linha
                 </label>
@@ -91,7 +91,7 @@ function App() {
               <div>
                 <label
                   htmlFor="constante-da-gravidade"
-                  className="block mb-2 text-md font-normal text-gray-900 dark:text-white"
+                  className="block mb-2 text-md font-normal"
                 >
                   Constante da gravidade
                 </label>
