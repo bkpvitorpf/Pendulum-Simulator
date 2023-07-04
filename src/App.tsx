@@ -45,7 +45,7 @@ function App() {
     <>
       <div className="w-full h-full flex-col text-white bg-Steel-Blue">
         <div className="flex align-middle justify-center font-semibold text-2xl items-center pt-2" style={{ height: '5%' }}>
-          <h1 className="">Pendulum SImulator</h1>
+          <h1 className="">Simulador De Pêndulo Simples</h1>
         </div>
         <div className="flex" style={{ height: '95%' }}>
           <main className="w-4/5 h-full bg-Steel-Blue box-border p-2" id="simulator" />
